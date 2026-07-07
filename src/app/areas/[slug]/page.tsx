@@ -3,13 +3,14 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 
 interface Props {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const page = localSEOPages.find(p => p.slug === params.slug);
+  const { slug } = await params;
+  const page = localSEOPages.find(p => p.slug === slug);
   if (!page) return {};
 
   return {
@@ -24,8 +25,9 @@ export async function generateStaticParams() {
   }));
 }
 
-export default function AreaPage({ params }: Props) {
-  const page = localSEOPages.find(p => p.slug === params.slug);
+export default async function AreaPage({ params }: Props) {
+  const { slug } = await params;
+  const page = localSEOPages.find(p => p.slug === slug);
 
   if (!page) {
     notFound();

@@ -3,13 +3,14 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 
 interface Props {
-  params: {
+  params: Promise<{
     service: string;
-  };
+  }>;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const service = Object.values(services).find(s => s.slug === params.service);
+  const { service: serviceSlug } = await params;
+  const service = Object.values(services).find(s => s.slug === serviceSlug);
   if (!service) return {};
 
   return {
@@ -24,8 +25,9 @@ export async function generateStaticParams() {
   }));
 }
 
-export default function ServicePage({ params }: Props) {
-  const service = Object.values(services).find(s => s.slug === params.service);
+export default async function ServicePage({ params }: Props) {
+  const { service: serviceSlug } = await params;
+  const service = Object.values(services).find(s => s.slug === serviceSlug);
 
   if (!service) {
     notFound();
