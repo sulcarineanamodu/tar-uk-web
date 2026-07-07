@@ -1,7 +1,9 @@
 import { Metadata } from "next";
-import { AnimatedHero } from "@/components/sections/AnimatedHero";
-import { ServicesGridAnimated } from "@/components/sections/ServicesGridAnimated";
-import { PricingSectionAnimated } from "@/components/sections/PricingSectionAnimated";
+import dynamic from "next/dynamic";
+
+const AnimatedHero = dynamic(() => import("@/components/sections/AnimatedHero").then(m => ({ default: m.AnimatedHero })), { ssr: false });
+const ServicesGridAnimated = dynamic(() => import("@/components/sections/ServicesGridAnimated").then(m => ({ default: m.ServicesGridAnimated })), { ssr: false });
+const PricingSectionAnimated = dynamic(() => import("@/components/sections/PricingSectionAnimated").then(m => ({ default: m.PricingSectionAnimated })), { ssr: false });
 
 export const metadata: Metadata = {
   title: "Premium Appliance Repairs | TAR The Appliance Repairs",

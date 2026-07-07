@@ -10,11 +10,11 @@ import ScrollTriggerPlugin from 'gsap/dist/ScrollTrigger';
 export function ServicesGridAnimated() {
   const services = [
     { icon: Waves, name: 'Washing Machine', description: 'Expert repairs for all washing machine issues', href: '/washing-machine-repair', color: 'from-blue-light to-electric-blue' },
-    { icon: UtensilsCrossed, name: 'Oven Repair', description: 'Fast and reliable oven repair services', href: '/oven-repair', color: 'from-orange-400 to-orange-500' },
-    { icon: UtensilsCrossed, name: 'Cooker Repair', description: 'Professional cooker and hob repairs', href: '/cooker-repair', color: 'from-red-400 to-red-500' },
-    { icon: Droplets, name: 'Dishwasher', description: 'Comprehensive dishwasher repair', href: '/dishwasher-repair', color: 'from-cyan-400 to-cyan-500' },
-    { icon: Refrigerator, name: 'Fridge & Freezer', description: 'Keep your food fresh with our repairs', href: '/fridge-freezer-repair', color: 'from-blue-400 to-blue-500' },
-    { icon: Wind, name: 'Tumble Dryer', description: 'Efficient dryer repair and maintenance', href: '/tumble-dryer-repair', color: 'from-purple-400 to-purple-500' },
+    { icon: UtensilsCrossed, name: 'Oven Repair', description: 'Fast and reliable oven repair services', href: '/oven-repair', color: 'from-electric-blue to-navy' },
+    { icon: UtensilsCrossed, name: 'Cooker Repair', description: 'Professional cooker and hob repairs', href: '/cooker-repair', color: 'from-navy to-charcoal' },
+    { icon: Droplets, name: 'Dishwasher', description: 'Comprehensive dishwasher repair', href: '/dishwasher-repair', color: 'from-safety-green to-green-light' },
+    { icon: Refrigerator, name: 'Fridge & Freezer', description: 'Keep your food fresh with our repairs', href: '/fridge-freezer-repair', color: 'from-navy-dark to-navy' },
+    { icon: Wind, name: 'Tumble Dryer', description: 'Efficient dryer repair and maintenance', href: '/tumble-dryer-repair', color: 'from-charcoal to-electric-blue' },
   ];
 
   const containerRef = useRef<HTMLDivElement>(null);
