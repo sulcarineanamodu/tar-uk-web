@@ -3,47 +3,80 @@
 import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import gsap from 'gsap';
-import { Canvas } from '@react-three/fiber';
-import { Points, PointMaterial } from '@react-three/drei';
 import * as THREE from 'three';
 
-// Particle field background
-function ParticleField() {
-  const pointsRef = useRef<THREE.Points>(null);
-  const count = 3000;
-  
+function ParticleField({ mountRef }: { mountRef: React.RefObject<HTMLDivElement | null> }) {
   useEffect(() => {
-    if (!pointsRef.current) return;
-    
+    if (!mountRef.current) return;
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);
+    camera.position.z = 500;
+
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    mountRef.current.appendChild(renderer.domElement);
+
+    const count = 3000;
     const positions = new Float32Array(count * 3);
-    for (let i = 0; i < count * 3; i += 3) {
+    for (let i = 0; i < count * 3; i++) {
       positions[i] = (Math.random() - 0.5) * 2000;
-      positions[i + 1] = (Math.random() - 0.5) * 2000;
-      positions[i + 2] = (Math.random() - 0.5) * 2000;
     }
 
     const geometry = new THREE.BufferGeometry();
     geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    
-    if (pointsRef.current.geometry) {
-      pointsRef.current.geometry = geometry;
-    }
-  }, []);
 
-  return (
-    <Points ref={pointsRef} limit={count}>
-      <PointMaterial transparent color="#2563EB" size={2} sizeAttenuation={true} />
-    </Points>
-  );
+    const material = new THREE.PointsMaterial({
+      color: 0x2563eb,
+      size: 2,
+      transparent: true,
+      opacity: 0.7,
+      sizeAttenuation: true,
+    });
+
+    const particles = new THREE.Points(geometry, material);
+    scene.add(particles);
+
+    let animId: number;
+    const animate = () => {
+      animId = requestAnimationFrame(animate);
+      particles.rotation.y += 0.0003;
+      particles.rotation.x += 0.0001;
+      renderer.render(scene, camera);
+    };
+    animate();
+
+    const handleResize = () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    };
+    window.addEventListener('resize', handleResize);
+
+    const el = mountRef.current;
+    return () => {
+      cancelAnimationFrame(animId);
+      window.removeEventListener('resize', handleResize);
+      if (el && renderer.domElement.parentNode === el) {
+        el.removeChild(renderer.domElement);
+      }
+      geometry.dispose();
+      material.dispose();
+      renderer.dispose();
+    };
+  }, [mountRef]);
+
+  return null;
 }
 
 export function AnimatedHero() {
+  const canvasRef = useRef<HTMLDivElement>(null);
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const ctasRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // GSAP SplitText animation on headline
     if (headlineRef.current) {
       const words = headlineRef.current.querySelectorAll('.word');
       gsap.to(words, {
@@ -56,7 +89,6 @@ export function AnimatedHero() {
       });
     }
 
-    // Fade up on subtitle
     if (subtitleRef.current) {
       gsap.to(subtitleRef.current, {
         opacity: 1,
@@ -67,7 +99,6 @@ export function AnimatedHero() {
       });
     }
 
-    // Fade up on CTAs
     if (ctasRef.current) {
       const btns = ctasRef.current.querySelectorAll('a');
       gsap.to(btns, {
@@ -83,11 +114,9 @@ export function AnimatedHero() {
 
   return (
     <div className="relative h-screen flex flex-col items-center justify-center overflow-hidden">
-      {/* Three.js Particle Background */}
-      <div className="absolute inset-0 z-0">
-        <Canvas camera={{ position: [0, 0, 500] }}>
-          <ParticleField />
-        </Canvas>
+      {/* Vanilla Three.js particle background */}
+      <div ref={canvasRef} className="absolute inset-0 z-0">
+        <ParticleField mountRef={canvasRef} />
       </div>
 
       {/* Gradient overlay */}
@@ -144,7 +173,7 @@ export function AnimatedHero() {
       <motion.div
         animate={{ y: [0, 12, 0] }}
         transition={{ duration: 2, repeat: Infinity }}
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20"
+        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 text-center"
       >
         <div className="text-white text-sm mb-2">Scroll to explore</div>
         <svg className="w-6 h-6 text-white mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
