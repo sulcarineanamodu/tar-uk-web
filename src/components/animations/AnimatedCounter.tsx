@@ -4,8 +4,6 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import ScrollTriggerPlugin from 'gsap/dist/ScrollTrigger';
 
-gsap.registerPlugin(ScrollTriggerPlugin);
-
 interface AnimatedCounterProps {
   value: number;
   suffix?: string;
@@ -16,6 +14,7 @@ export function AnimatedCounter({ value, suffix = '', prefix = '' }: AnimatedCou
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    gsap.registerPlugin(ScrollTriggerPlugin);
     if (!ref.current) return;
 
     const obj = { value: 0 };

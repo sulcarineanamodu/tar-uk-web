@@ -7,8 +7,6 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import ScrollTriggerPlugin from 'gsap/dist/ScrollTrigger';
 
-gsap.registerPlugin(ScrollTriggerPlugin);
-
 export function ServicesGridAnimated() {
   const services = [
     { icon: Waves, name: 'Washing Machine', description: 'Expert repairs for all washing machine issues', href: '/washing-machine-repair', color: 'from-blue-light to-electric-blue' },
@@ -22,6 +20,7 @@ export function ServicesGridAnimated() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    gsap.registerPlugin(ScrollTriggerPlugin);
     if (!containerRef.current) return;
 
     const cards = containerRef.current.querySelectorAll('[data-service-card]');

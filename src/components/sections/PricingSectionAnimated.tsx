@@ -5,12 +5,11 @@ import { motion } from 'framer-motion';
 import gsap from 'gsap';
 import ScrollTriggerPlugin from 'gsap/dist/ScrollTrigger';
 
-gsap.registerPlugin(ScrollTriggerPlugin);
-
 export function PricingSectionAnimated() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    gsap.registerPlugin(ScrollTriggerPlugin);
     if (!containerRef.current) return;
 
     const cards = containerRef.current.querySelectorAll('[data-price-card]');

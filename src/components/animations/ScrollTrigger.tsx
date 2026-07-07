@@ -4,8 +4,6 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import ScrollTriggerPlugin from 'gsap/dist/ScrollTrigger';
 
-gsap.registerPlugin(ScrollTriggerPlugin);
-
 interface ScrollTriggerProps {
   children: React.ReactNode;
   className?: string;
@@ -15,6 +13,7 @@ export function ScrollTriggerSection({ children, className = '' }: ScrollTrigger
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    gsap.registerPlugin(ScrollTriggerPlugin);
     if (!ref.current) return;
 
     const cards = ref.current.querySelectorAll('[data-scroll-trigger]');
