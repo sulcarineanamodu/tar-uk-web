@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "@/styles/globals.css";
+import { AnimationProviders } from "@/components/providers/AnimationProviders";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
@@ -20,19 +20,15 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <style>{`
-          * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-          }
+          * { margin: 0; padding: 0; box-sizing: border-box; }
           html { scroll-behavior: smooth; }
           body { font-family: 'Inter', sans-serif; background: white; color: #1E293B; line-height: 1.6; }
-          a { text-decoration: none; }
-          button { border: none; cursor: pointer; font-family: inherit; }
         `}</style>
       </head>
-      <body className={`${inter.variable}`} style={{ fontFamily: 'Inter, sans-serif' }}>
-        {children}
+      <body className={`${inter.variable} font-inter bg-white text-grey-800`}>
+        <AnimationProviders>
+          {children}
+        </AnimationProviders>
       </body>
     </html>
   );
