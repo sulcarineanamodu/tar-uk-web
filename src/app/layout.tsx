@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { AnimationProviders } from "@/components/providers/AnimationProviders";
+import { AnimatedNavbar } from "@/components/layout/AnimatedNavbar";
+import Footer from "@/components/layout/Footer";
 import "@/styles/globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
@@ -28,7 +30,9 @@ export default function RootLayout({
       </head>
       <body className={`${inter.variable} font-inter bg-white text-grey-800`}>
         <AnimationProviders>
+          <AnimatedNavbar />
           {children}
+          <Footer />
         </AnimationProviders>
       </body>
     </html>
